@@ -1,0 +1,32 @@
+---
+
+- name: Hello World - step1
+  hosts: all
+  # Run Hello world all nodes
+  tasks:
+  - name: ECHO
+    shell: echo "Hi! Tower is working."
+
+- name: Copy file to local
+  hosts: source
+  tasks:
+  - name: Copy file to local
+    fetch:
+      src: /home/vagrant/hello.txt
+      dest: /tmp/
+      flat: yes
+  - debug: var=ansible_date_time
+
+- name: Copy file to destination
+  hosts: destination
+  tasks:
+  - name: Copy file with owner and permissions
+    copy:
+      src: /tmp/hello.txt
+      dest: /home/vagrant/hello.txt
+  - name: Restart the app
+    shell: hostname -f
+    register: host_name
+  - debug: var=ansible_date_time
+   # debug output to file
+  - local_action: lineinfile create=yes line={{ host_name.stdout }} path=/tmp/ansible_output_{{ ansible_date_time.date }}.log
