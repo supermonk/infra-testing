@@ -1,10 +1,4 @@
 # infra-testing
-=============
-
-Shell chores 
- 
-
-
 ### Copy file from one host to another via localhost
 1. Install vagrant.
 ```bash
